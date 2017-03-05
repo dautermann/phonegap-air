@@ -280,8 +280,16 @@
     });
 }
 
+#define DEMONSTRATE_THE_PROBLEM
+
 -(void)reloadWebView
 {
+#ifdef DEMONSTRATE_THE_PROBLEM
+    NSURL *url = [NSURL URLWithString:@"http://www.apple.com"];
+    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:90.0];
+    [self.webView loadRequest:urlRequest];
+    [self.view sendSubviewToBack:self.launchImage];
+#else
     NSString *indexHTMLData = [NSString stringWithContentsOfURL:[_OTAUpdatedWWWURL URLByAppendingPathComponent:self.startPage] encoding:NSUTF8StringEncoding error:nil];
     CGSize viewSize = [UIScreen mainScreen].bounds.size;
     
@@ -307,6 +315,7 @@
     _webViewCurrentBaseURL = _OTAUpdatedWWWURL;
     
     [self.view sendSubviewToBack:self.launchImage];
+#endif
 }
 
 #pragma mark Shake Gesture Handlers
