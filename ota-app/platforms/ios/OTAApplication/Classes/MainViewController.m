@@ -29,6 +29,9 @@
 #import "WKWebView+WKWebView_Javascript.h"
 #import <WebKit/WKNavigationDelegate.h>
 
+// for stackoverflow question http://stackoverflow.com/questions/42502217/programatically-change-wkwebview-content-size
+#define DEMONSTRATE_THE_PROBLEM
+
 @implementation MainViewController {
     // This bool is true when an update was downloaded in the background, but hasn't been applied yet
     BOOL _pendingBackgroundUpdate;
@@ -165,7 +168,10 @@
     else {
         [[NSUserDefaults standardUserDefaults] setValue:currentBundleVersion forKey:@"bundleVersion"];
     }
-    
+
+#ifdef DEMONSTRATE_THE_PROBLEM
+    [self reloadWebView];
+#else
     // If the version is empty, attempt an blocking immediate update
     if(oldVersion == nil || isAfterUpdate) {
         [self enterUpdateModeWithLabelText:@"Please wait.."];
@@ -218,6 +224,7 @@
             }
         }];
     }
+#endif
     
     [self becomeFirstResponder];
 }
@@ -279,8 +286,6 @@
         }
     });
 }
-
-#define DEMONSTRATE_THE_PROBLEM
 
 -(void)reloadWebView
 {
