@@ -230,11 +230,20 @@
     [self becomeFirstResponder];
 }
 
+- (void)pageDidLoad:(NSNotification *)notification
+{
+    NSString *userAgent = [self.webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight"];
+    NSLog(@"pageLoadedNotification document.offsetheight result is %@", userAgent);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pageDidLoad:) name:CDVPageDidLoadNotification object:self.webView];
 }
+
 
 - (void)viewDidUnload
 {
